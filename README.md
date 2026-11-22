@@ -30,7 +30,7 @@ Le dashboard (`http://localhost:8761`) montre tous les services enregistrés en 
 - NOTIFICATION : 2 instances (8084, 8094)
 - JOB et CANDIDATURE : 1 instance chacun
 
-![Capture du dashboard Eureka avec tous les services](documentation/eureka-dashboard.png)
+![Capture du dashboard Eureka avec tous les services](documentation/diagrams/eureka-dashboard.png)
 ## Prérequis
 
 - Java 17+ et Maven
