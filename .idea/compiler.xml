@@ -8,8 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="candidat" />
         <module name="job" />
-        <module name="discovery" />
         <module name="canditature" />
+        <module name="gateway" />
+        <module name="discovery" />
       </profile>
     </annotationProcessing>
   </component>
@@ -18,6 +19,7 @@
       <module name="candidat" options="-parameters" />
       <module name="canditature" options="-parameters" />
       <module name="discovery" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="job" options="-parameters" />
     </option>
   </component>
