@@ -1,7 +1,7 @@
 """Notification microservice - entry point.
 
-Run:  uvicorn app.main:app --reload --port 8084
-  or: python -m app.main
+Run:  $env:PORT=8084; python -m app.main
+  or: $env:PORT=8084; uvicorn app.main:app --port 8084
 """
 import os
 from contextlib import asynccontextmanager
@@ -12,30 +12,24 @@ from fastapi import FastAPI
 from app.routers import notification
 
 PORT = int(os.getenv("PORT", "8084"))
-EUREKA_SERVER = "http://localhost:8761/eureka"
-HELLO_URL = f"http://localhost:{PORT}/api/notifications/hello"
+EUREKA_SERVER = os.getenv("EUREKA_SERVER", "http://localhost:8761/eureka")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: register in Eureka
+    # Démarrage : enregistrement du service dans Eureka
     await eureka_client.init_async(
         eureka_server=EUREKA_SERVER,
         app_name="NOTIFICATION",
-        instance_id=f"notification:{PORT}",
         instance_host="localhost",
         instance_port=PORT,
-        status_page_url=HELLO_URL,
-        health_check_url=HELLO_URL,
-        home_page_url=HELLO_URL,
     )
     yield
-    # Shutdown: deregister from Eureka
+    # Arrêt : désenregistrement propre
     await eureka_client.stop_async()
 
 
 app = FastAPI(
-    lifespan=lifespan,
     title="Notification Microservice API",
     version="1.0.0",
     description=(
@@ -48,6 +42,7 @@ app = FastAPI(
     docs_url="/swagger-ui",       # Swagger UI
     openapi_url="/v3/api-docs",   # OpenAPI JSON
     redoc_url="/redoc",           # alternative documentation
+    lifespan=lifespan,
 )
 
 app.include_router(notification.router)
